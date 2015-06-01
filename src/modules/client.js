@@ -1,6 +1,5 @@
 "use strict";
 
-
 /**
  * Fitbit Authentication Module
  */
@@ -12,8 +11,13 @@ var Promise = require('bluebird');
 var config  = require('./../config');
 
 
-
 function FitbitApiClient() {
+
+    /**
+     * Set up OAuth parameters from config
+     * @type {OAuth}
+     */
+    console.log('FitbitClient INIT');
     this.oauth = new OAuth(
         config.requestTokenURL,
         config.accessTokenURL,
@@ -38,7 +42,7 @@ function FitbitApiClient() {
     this.getRequestToken = function() {
         var that = this;
         return new Promise(function(resolve, reject){
-            that.oauth.getOAuthRequestToken(that._standardCallback());
+            that.oauth.getOAuthRequestToken(that._standardCallback);
         });
     };
 
@@ -82,7 +86,7 @@ function FitbitApiClient() {
                 return reject("Client::requestResource => Invalid Parameters");
             }
             var url = config.userResourceURL + (userId || "-") + path;
-            var deferred = Q.defer();
+
             that.oauth.getProtectedResource(url, method, accessToken, accessTokenSecret, that._standardCallback);
         });
     };

@@ -1,13 +1,20 @@
-"use strict";
-
-
-
 /**
  * Fitbit API Index
  *
  */
 
+
+/** Be a little strict and disciplined */
+"use strict";
+
+
 var async           = require('async');
+
+var util            = require('util');
+
+var isArray         = util.isArray;
+
+var extend          = util._extend;
 
 var config          = require('./config');
 
@@ -19,19 +26,18 @@ var TokenModel      = require('./models/token');
 
 var Tokens          = [];
 
-var extend          = require('util')._extend;
+var QueryService    = require('./models/query-service');
 
-var ClientWrapper       = {};
+var Promise         = require('bluebird');
+
+var ClientWrapper   = {};
+
 
 ClientWrapper.getRequestToken   = _getRequestToken;
 
 ClientWrapper.getAccessToken    = _getAccessToken;
 
-ClientWrapper.get               = _get;
-
-ClientWrapper.set               = _set;
-
-ClientWrapper.delete            = _delete;
+ClientWrapper.query             = _query;
 
 /**
  * Get Request Token
@@ -69,6 +75,7 @@ function _getRequestToken(){
  */
 
 function _getAccessToken(token, secret, verifier){
+
     var tokenObj = TokenService.find('requestToken', token);
 
     return new Promise(function(resolve, reject){
@@ -89,17 +96,30 @@ function _getAccessToken(token, secret, verifier){
     });
 }
 
+/**
+ *
+ * @param what
+ * @param method
+ * @param format
+ * @param accessToken
+ * @param accessTokenSecret
+ * @param userId
+ * @private
+ */
+function _query(what, method, format, accessToken, accessTokenSecret, userId){
 
-function _delete(what, accessToken, accessTokenSecret, userId){
-    return _execute(what, 'DELETE', accessToken, accessTokenSecret, userId);
-}
-
-function _set(what, accessToken, accessTokenSecret, userId){
-    return _execute(what, 'UPDATE',accessToken, accessTokenSecret, userId);
-}
-
-function _get(what, accessToken, accessTokenSecret, userId){
-    return  _execute(what, 'GET',accessToken, accessTokenSecret, userId);
+    if(/get/i.test(format) === true){
+        return  _execute(what, 'GET', format, accessToken, accessTokenSecret, userId);
+    }
+    else if(/(set|update|post)/i.test(format) === true){
+        return  _execute(what, 'POST', format, accessToken, accessTokenSecret, userId);
+    }
+    else if(/delete/i.test(format) === true ){
+        return _execute(what, 'DELETE', accessToken, accessTokenSecret, userId);
+    }
+    else{
+        throw "Invalid Query Format Type";
+    }
 }
 
 /**
@@ -117,19 +137,26 @@ function _get(what, accessToken, accessTokenSecret, userId){
  * @param userId
  * @private
  */
-function _execute(what, method, accessToken, accessTokenSecret, userId){
+function _execute(what, method, format, accessToken, accessTokenSecret, userId){
 
     return new Promise(function(resolve, reject){
 
         var asyncStack = [];
 
-        if(typeof what === 'string'){
+        if(!what){
+            return reject("invalid what type");
+        }
+        if(isArray(what) !== true){
             what = [what];
         }
 
-        what.forEach(function(item){
+        what.forEach(function (item) {
 
-            var query = TokenService.create(method + '-query', item.alias);
+            item.format = format;
+
+            item.method = method;
+
+            var query = QueryService.create(item);
 
             asyncStack.push(_asyncRequestResourceClosure(query, method, accessToken, accessTokenSecret, uesrId));
 
@@ -137,10 +164,13 @@ function _execute(what, method, accessToken, accessTokenSecret, userId){
 
         async.parallel(asyncStack,
             function(err, results){
+                if(err){
+                    return reject(err);
+                }
                 var obj  = {};
-                what.forEach(function(item, index){
-                    obj[item.alias] = results[index];
-                })
+                what.forEach(function(item){
+                    obj[item.alias] = item;
+                });
                 resolve( obj );
         });
 
@@ -163,7 +193,9 @@ function _asyncRequestResourceClosure(path, method, accessToken, accessTokenSecr
             .requestResource(path, method, accessToken, accessTokenSecret, userId)
             .then(function(data){
                 cb(null, data);
-            })
+            }, function(reason){
+                cb(reason);
+            });
     }
 }
 
