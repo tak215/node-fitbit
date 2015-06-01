@@ -10,7 +10,6 @@ var expect = require('chai').expect;
 var QueryService = require('./../../src/modules/query-service');
 
 
-
 describe('Query Service', function(){
 
     describe('Generate queries', function(){
@@ -363,8 +362,7 @@ function _GenerateQueries__StandardNotExistTest(alias, method){
         method: method
     };
     expect(function(){
-        var d = QueryService.create(value);
-        console.log('d',d);
+        QueryService.create(value);
     }).to.throw("That method, "+value.method+" does not exist for " + value.alias);
 }
 

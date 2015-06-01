@@ -23,20 +23,4 @@ Config.defaultLocale    = 'en_US';
 Config.defaultMetric    = 'METRIC';
 
 
-/**
- * Available locales
- *
-     ja_JP	Japan
-     fr_FR	France
-     es_ES	Spain
-     en_US
-     United States (default)
-     en_NZ	New Zealand
-     en_GB
-     United Kingdom
-     en_AU	Australia
-     de_DE	Germany
-
- */
-
 module.exports = Config;

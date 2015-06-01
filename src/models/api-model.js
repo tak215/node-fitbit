@@ -4,28 +4,7 @@
  * API Model
  */
 
-/**
- * User
- */
-// GET  URL:    https://api.fitbit.com/1/user/-/profile.json
-// POST URL:    https://api.fitbit.com/1/user/-/profile.json
-
-/**
- * Body-Measurements
- */
-// GET URL:     https://api.fitbit.com/1/user/-/body/date/2015-03-01.json
-// POST URL:    https://api.fitbit.com/1/user/-/body.json?date=2015-03-01
-// POST DATA:   { weight:0, fat:0, date:'2015-03-01' }
-
-/**
- * Body-Weight
- */
-// GET URL:     https://api.fitbit.com/1/user/-/body/log/weight/date/2015-03-01.json
-// POST URL:    https://api.fitbit.com/1/user/-/body/log/weight.json
-// POST DATA:   { weight:0, time:'12:20:00', date:'2015-03-01' }
-
-var APIModel = [
-    {
+var APIModel = {
         user: {
             GET: {
                 url: 'profile'
@@ -207,86 +186,7 @@ var APIModel = [
                 url: 'activities'
             }
         }
-    }];
+    };
 
-/**,
-    {
-        alias: 'measurements',
-        url: 'body/date/',
-        date: true,
-        timespan: false
-    },{
-        alias: 'weight',
-        url: 'body/log/weight/date/',
-        date: true,
-        timespan: false
-    },{
-        alias: 'fat',
-        url: 'body/log/fat/date/',
-        date: true,
-        timespan: false
-    },{
-        alias: 'badge',
-        url: 'badges',
-        date: false,
-        timespan: false
-    },{
-        alias: 'series',
-        url: 'body/weight/date/',
-        date: true,
-        timespan: true
-    },{
-        alias: 'weight-goal',
-        url: 'body/log/weight/',
-        date: false,
-        timespan: false
-    },{
-        alias: 'fat-goal',
-        url: 'body/log/fat/',
-        date: false,
-        timespan: false
-    },{
-        alias: 'activities',
-        url: 'activities/date/',
-        date: true,
-        timespan: false
-    },{
-        alias: 'activity-stats',
-        url: 'activities',
-        date: false,
-        timespan: false
-    },{
-        alias: 'time-series',
-        url: 'activities/calories/date/',
-        date: true,
-        timespan: true
-    },{
-        alias: 'recent-activity',
-        url: 'activities/recent',
-        date: false,
-        timespan: false
-    },{
-        alias: 'frequent-activity',
-        url: 'activities/recent',
-        date: false,
-        timespan: false
-    },{
-        alias: 'favorite-activity',
-        url: 'activities/favorite',
-        date: false,
-        timespan: false
-    },{
-        alias: 'activity-daily-goal',
-        url: 'activities/goals/daily',
-        date: false,
-        timespan: false
-    },{
-        alias: 'activity-weekly-goal',
-        url: 'activities/goals/weekly',
-        date: false,
-        timespan: false
-    }
-];
-**/
 
 module.exports = APIModel;
