@@ -108,13 +108,13 @@ function _getAccessToken(token, secret, verifier){
  */
 function _query(what, method, format, accessToken, accessTokenSecret, userId){
 
-    if(/get/i.test(format) === true){
+    if(/get/i.test(method) === true){
         return  _execute(what, 'GET', format, accessToken, accessTokenSecret, userId);
     }
-    else if(/(set|update|post)/i.test(format) === true){
+    else if(/(set|update|post)/i.test(method) === true){
         return  _execute(what, 'POST', format, accessToken, accessTokenSecret, userId);
     }
-    else if(/delete/i.test(format) === true ){
+    else if(/delete/i.test(method) === true ){
         return _execute(what, 'DELETE', accessToken, accessTokenSecret, userId);
     }
     else{

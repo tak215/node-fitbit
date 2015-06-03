@@ -28,7 +28,7 @@ function _create(value){
     if(!value.method) throw "Method is not specified.";
     if(!value.format) { value.format = 'json'; }
 
-    var fn = '_create__' + value.method + 'Query';
+    var fn;
 
     switch(value.method){
         case "GET":
