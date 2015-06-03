@@ -166,7 +166,7 @@ var APIModel = {
         browsePublicActivities:{
             GET: {
                 publicParam: true,
-                url: '/1/activities.json'
+                url: '1/activities'
             }
         },
         publicActivities:{
