@@ -79,21 +79,21 @@ function _create__query(value){
                 }
 
                 // if date is listed, then add that to the parameter
-                if(dict.dateRequired === true && !value.date){
+                if(dict.dateRequired === true ){
+                    if(!value.date)
                     value.date = '2015-06-02'; // TODO put today's date
                    // throw "Date is not set!";
-                }
-                if(value.date) {
-                    query +=  value.date;
+                    if(value.date) {
+                        query +=  value.date;
+                    }
                 }
 
 
                 // if timespan is required
-                if(dict.timeSeries === true && !value.timespan){
-                   // throw "Timespan is not set";
-                    value.timespan = '7d';
-                }
-                if(value.timespan) {
+                if(dict.timeSeries === true){
+                    if(!value.timespan){
+                        value.timespan = '7d';
+                    }
                     query += '/' + value.timespan;
                 }
 
