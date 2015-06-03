@@ -169,7 +169,7 @@ var APIModel = {
                 url: '1/activities'
             }
         },
-        publicActivities:{
+        publicActivity:{
             GET: {
                 publicParam: true,
                 url: 'activities/'
