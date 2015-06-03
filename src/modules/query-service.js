@@ -66,8 +66,10 @@ function _create__query(value){
 
                 // if date is listed, then add that to the parameter
                 if(dict.dateRequired === true && !value.date){
-                    throw "Date is not set!";
-                } else if(value.date) {
+                    value.date = '2015-06-02';
+                   // throw "Date is not set!";
+                }
+                if(value.date) {
                     query +=  value.date;
                 }
 
