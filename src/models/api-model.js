@@ -177,7 +177,7 @@ var APIModel = {
         },
         timeSeries:{
             GET: {
-                url: 'body/weight/date/2015-03-01/7d',
+                url: '',
                 timeSeries: true,
                 dateRequired: true // will be true by default
             }
