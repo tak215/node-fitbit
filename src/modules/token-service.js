@@ -12,7 +12,6 @@ TokenService.find   = _find;
 
 TokenService.add    = _add;
 
-TokenService.create = _create;
 
 module.exports = TokenService;
 

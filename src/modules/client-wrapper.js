@@ -16,17 +16,17 @@ var isArray         = util.isArray;
 
 var extend          = util._extend;
 
-var config          = require('./config');
+var config          = require('./../config');
 
-var TokenService    = require('./modules/token-service');
+var TokenService    = require('./token-service');
 
-var FitbitClient    = require('./modules/client');
+var FitbitClient    = require('./client');
 
-var TokenModel      = require('./models/token');
+var TokenModel      = require('./../models/token');
 
 var Tokens          = [];
 
-var QueryService    = require('./models/query-service');
+var QueryService    = require('./query-service');
 
 var Promise         = require('bluebird');
 
@@ -200,6 +200,4 @@ function _asyncRequestResourceClosure(path, method, accessToken, accessTokenSecr
 }
 
 
-
-
-module.exports = FitbitAPI;
+module.exports = ClientWrapper;

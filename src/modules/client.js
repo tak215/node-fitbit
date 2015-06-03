@@ -100,6 +100,7 @@ function FitbitApiClient() {
      * @private
      */
     this._standardCallback = function(err, data, response){
+        console.log('received callback',data);
         return function(resolve, reject){
             if(err){
                 return reject(err);
