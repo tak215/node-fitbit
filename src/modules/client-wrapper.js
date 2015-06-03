@@ -168,14 +168,15 @@ function _execute(what, method, format, accessToken, accessTokenSecret, userId){
 
         async.parallel(asyncStack,
             function(err, results){
+
                 if(err){
                     return reject(err);
                 }
-                var obj  = {};
-                what.forEach(function(item){
-                    obj[item.alias] = item;
+                results.map(function(item){
+                    return item.data;
                 });
-                resolve( obj );
+
+                resolve( results );
         });
 
     });

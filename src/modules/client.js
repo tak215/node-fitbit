@@ -102,30 +102,13 @@ var FitbitApiClient = {};
                 return reject("Client::requestResource => Invalid Parameters");
             }
             var url = config.userResourceURL + (userId || "-") + path;
-            console.log('url',url, method, accessToken, accessTokenSecret);
-            that.oauth.getProtectedResource(url, method, accessToken, accessTokenSecret, that._standardCallback);
-        });
-    };
-
-    /**
-     * Standardarized Callback for auth response
-     * @param err
-     * @param data
-     * @param response
-     * @returns {Function}
-     * @private
-     */
-    FitbitApiClient._standardCallback = function(err, data, response){
-        console.log('received callback',data);
-        return function(resolve, reject){
-            if(err){
-                return reject(err);
-            }
-            resolve({
-                data: data,
-                response:response
+            that.oauth.getProtectedResource(url, method, accessToken, accessTokenSecret, function(err, data, response){
+                if(err){
+                    return reject(err);
+                }
+                resolve(data);
             });
-        }
+        });
     };
 
 
