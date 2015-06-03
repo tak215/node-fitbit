@@ -162,9 +162,10 @@ function _execute(what, inputObj){
 
         async.parallel(asyncStack,
             function(err, results){
-
-                if(err){
+                if(err && (!results || results.length < 1)){
                     return reject(err);
+                } else if(err){
+                    console.log("Error occurred :: " + err);
                 }
                 results.map(function(item){
                     return item.data;

@@ -103,7 +103,8 @@ var FitbitApiClient = {};
             }
             var url = config.userResourceURL + (userId || "-") + path;
             that.oauth.getProtectedResource(url, method, accessToken, accessTokenSecret, function(err, data, response){
-                if(err){
+                console.log('response',response.statusCode);
+                if(err || response.statusCode == '429'){
                     return reject(err);
                 }
                 var json;
