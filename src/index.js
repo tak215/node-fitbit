@@ -6,15 +6,18 @@
  *
  */
 
-var ClientWrapper           = require('./modules/client-wrapper');
 
-var FitbitAPI               = {};
+    var FitbitAPI = {};
 
-FitbitAPI.query             = ClientWrapper.query;
+    var ClientWrapper = require('./modules/client-wrapper');
 
-FitbitAPI.getAccessToken    = ClientWrapper.getAccessToken;
+    FitbitAPI.setKeys           = ClientWrapper.setKeys;
 
-FitbitAPI.getRequestToken   = ClientWrapper.getRequestToken;
+    FitbitAPI.query             = ClientWrapper.query;
+
+    FitbitAPI.getAccessToken    = ClientWrapper.getAccessToken;
+
+    FitbitAPI.getRequestToken   = ClientWrapper.getRequestToken;
 
 
 /** Handle rejection error */
@@ -23,3 +26,4 @@ process.on('unhandledRejection', function(err){
 });
 
 module.exports = FitbitAPI;
+

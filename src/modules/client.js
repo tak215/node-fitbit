@@ -11,14 +11,30 @@ var Promise = require('bluebird');
 var config  = require('./../config');
 
 
-function FitbitApiClient() {
+var FitbitApiClient = {};
+
+
+    FitbitApiClient.resetKeys = function(keys){
+        if(!keys.CONSUMER_KEY || !keys.CONSUMER_SECRET){
+            throw "KEys are not set";
+        }
+        FitbitApiClient.oauth = new OAuth(
+            config.requestTokenURL,
+            config.accessTokenURL,
+            keys.CONSUMER_KEY,
+            keys.CONSUMER_SECRET,
+            config.oauthVersion,
+            null,
+            config.encryptionMethod
+        );
+    };
 
     /**
      * Set up OAuth parameters from config
      * @type {OAuth}
      */
     console.log('FitbitClient INIT');
-    this.oauth = new OAuth(
+    FitbitApiClient.oauth = new OAuth(
         config.requestTokenURL,
         config.accessTokenURL,
         config.CONSUMER_KEY,
@@ -39,7 +55,7 @@ function FitbitApiClient() {
      * @returns {Promise}
      */
 
-    this.getRequestToken = function() {
+    FitbitApiClient.getRequestToken = function() {
         var that = this;
         return new Promise(function(resolve, reject){
             that.oauth.getOAuthRequestToken(that._standardCallback);
@@ -60,7 +76,7 @@ function FitbitApiClient() {
      * @returns {Promise}
      */
 
-    this.getAccessToken = function(requestToken, requestTokenSecret, verifier) {
+    FitbitApiClient.getAccessToken = function(requestToken, requestTokenSecret, verifier) {
         var that = this;
         return new Promise(function(resolve, reject) {
             that.oauth.getOAuthAccessToken(requestToken, requestTokenSecret, verifier, that._standardCallback);
@@ -79,14 +95,14 @@ function FitbitApiClient() {
      * @returns {Promise}
      *
      */
-    this.requestResource = function(path, method, accessToken, accessTokenSecret, userId) {
+    FitbitApiClient.requestResource = function(path, method, accessToken, accessTokenSecret, userId) {
         var that = this;
         return new Promise(function(resolve, reject) {
             if(!path || !method || !accessToken || !accessTokenSecret){
                 return reject("Client::requestResource => Invalid Parameters");
             }
             var url = config.userResourceURL + (userId || "-") + path;
-
+            console.log('url',url, method, accessToken, accessTokenSecret);
             that.oauth.getProtectedResource(url, method, accessToken, accessTokenSecret, that._standardCallback);
         });
     };
@@ -99,7 +115,7 @@ function FitbitApiClient() {
      * @returns {Function}
      * @private
      */
-    this._standardCallback = function(err, data, response){
+    FitbitApiClient._standardCallback = function(err, data, response){
         console.log('received callback',data);
         return function(resolve, reject){
             if(err){
@@ -112,6 +128,5 @@ function FitbitApiClient() {
         }
     };
 
-}
 
 module.exports = FitbitApiClient;

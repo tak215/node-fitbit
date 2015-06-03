@@ -39,6 +39,8 @@ ClientWrapper.getAccessToken    = _getAccessToken;
 
 ClientWrapper.query             = _query;
 
+ClientWrapper.setKeys           = FitbitClient.resetKeys;
+
 /**
  * Get Request Token
  * @returns {Promise}
@@ -151,14 +153,16 @@ function _execute(what, method, format, accessToken, accessTokenSecret, userId){
         }
 
         what.forEach(function (item) {
+            var obj = {}
+            obj.alias = item;
+            obj.format = format;
+            obj.method = method;
+            obj.userId = userId;
 
-            item.format = format;
-
-            item.method = method;
-
-            var query = QueryService.create(item);
-
-            asyncStack.push(_asyncRequestResourceClosure(query, method, accessToken, accessTokenSecret, uesrId));
+            var query = QueryService.create(obj);
+            query = query.split(/user\/(-|[0-9]+)/).pop();
+            console.log('query',query);
+            asyncStack.push(_asyncRequestResourceClosure(query, method, accessToken, accessTokenSecret, userId));
 
         });
 
