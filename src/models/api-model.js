@@ -91,6 +91,30 @@ var APIModel = {
                 url: 'body/log/fat/'
             }
         },
+        sleep: {
+            GET: {
+                url: 'sleep/date/',
+                dateRequired: true
+            }
+        },
+        heartRate:{
+            GET: {
+                url: 'heart/date/',
+                dateRequired: true
+            }
+        },
+        glucose: {
+            GET: {
+                url: 'glucose/date/',
+                dateRequired: true
+            }
+        },
+        bloodPressure: {
+            GET: {
+                url: 'bp/date/',
+                dateRequired: true
+            }
+        },
         badges: {
             GET: {
                 url: 'badges'
@@ -122,7 +146,8 @@ var APIModel = {
         },
         activities: {
             GET: {
-                url: 'activities'
+                url: 'activities/date/',
+                dateRequired:true
             },
             POST: {
                 url: 'activities',
@@ -138,9 +163,23 @@ var APIModel = {
                 ]
             }
         },
+        browsePublicActivities:{
+            GET: {
+                publicParam: true,
+                url: '/1/activities.json'
+            }
+        },
         publicActivities:{
             GET: {
-                url: '/1/activities.json'
+                publicParam: true,
+                url: 'activities/'
+            }
+        },
+        timeSeries:{
+            GET: {
+                url: 'body/weight/date/2015-03-01/7d',
+                timeSeries: true,
+                dateRequired: true // will be true by default
             }
         },
         recentActivity: {
@@ -151,6 +190,14 @@ var APIModel = {
         frequentActivity: {
             GET: {
                 url: 'activities/frequent'
+            }
+        },
+        favoriteActivity: {
+            GET: {
+                url: 'activities/favorite'
+            },
+            POST: {
+                url: 'activities/log/favorite/'
             }
         },
         activityDailyGoal: {
@@ -185,7 +232,100 @@ var APIModel = {
             GET: {
                 url: 'activities'
             }
+        },
+        searchFood:{
+            GET: {
+                publicParam: true,
+                url: 'foods/search'
+            }
+        },
+        foods: {
+            GET: {
+                dateRequired: true,
+                url: 'foods/log/date/'
+            },
+            POST: {
+                url: 'foods/log'
+            }
+        },
+        recentFoods: {
+            GET: {
+                url: 'foods/log/recent'
+            }
+        },
+        favoriteFoods: {
+            GET: {
+                url: 'foods/log/favorite'
+            }
+        },
+        frequentFoods: {
+            GET: {
+                url: 'foods/log/frequent'
+            }
+        },
+        searchFoods:{
+            GET: {
+                publicParam: true,
+                url: 'foods/',
+                addQuery: true
+            }
+        },
+        publicFoods: {
+            GET: {
+                publicParam: true,
+                url: 'foods'
+            }
+        },
+        foodUnits:{
+            GET: {
+                publicParam: true,
+                url: 'foods/units'
+            }
+        },
+        water: {
+            GET: {
+                dateRequired: true,
+                url: 'foods/log/water/date/'
+            },
+            POST: {
+                dateRequired: true,
+                url: 'foods/log/water/'
+            },
+            DELETE: {
+                url: 'foods/log/water'
+            }
+        },
+        meals: {
+            GET: {
+                url: 'meals'
+            }
+        },
+        subscriptions: {
+            GET: {
+                url: 'apiSubscriptions'
+            }
+        },
+        devices:{
+            GET: {
+                url: 'devices'
+            }
+        },
+        invitations: {
+            GET: {
+                url: 'friends/invitations'
+            }
+        },
+        friends: {
+            GET: {
+                url: 'friends'
+            }
+        },
+        leaderboard: {
+            GET: {
+                url: 'friends/leaderboard'
+            }
         }
+
     };
 
 

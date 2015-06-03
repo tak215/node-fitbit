@@ -64,19 +64,36 @@ function _create__query(value){
 
                 query += dict.url;
 
+                // if it's a public parameter then get rid of user/-/ or user/2342/ because it's not needed
+                if(dict.publicParam === true){
+                    query = query.replace(/\/user\/(-|[0-9]+)/,'');
+                }
+
+                // if it's a time series object, then add necessary parameter before the date
+                if(dict.timeSeries === true){
+                    dict.dateRequired = true;
+                    if(!value.category || !value.subcategory){
+                        throw "Categories are not defined";
+                    }
+                    query += value.category + '/' + value.subcategory + '/date/';
+                }
+
                 // if date is listed, then add that to the parameter
                 if(dict.dateRequired === true && !value.date){
-                    value.date = '2015-06-02'; // TODO
+                    value.date = '2015-06-02'; // TODO put today's date
                    // throw "Date is not set!";
                 }
                 if(value.date) {
                     query +=  value.date;
                 }
 
+
                 // if timespan is required
-                if(dict.timespanRequired === true && !value.timespan){
-                    throw "Timespan is not set";
-                } else if(value.timespan) {
+                if(dict.timeSeries === true && !value.timespan){
+                   // throw "Timespan is not set";
+                    value.timespan = '7d';
+                }
+                if(value.timespan) {
                     query += '/' + value.timespan;
                 }
 

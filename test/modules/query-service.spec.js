@@ -15,149 +15,186 @@ describe('Query Service', function(){
     describe('Generate queries', function(){
 
         describe('User', function(){
-
             it('should obtain GET user query', _GenerateQueries__User__GET);
-
             it('should obtain POST user query', _GenerateQueries__User__POST);
-
             it('should NOT obtain DELETE user query', _GenerateQueries__User__DELETE);
-
         });
 
         describe('Body Measurements', function(){
-
             it('should obtain GET body-measurements query', _GenerateQueries__BodyMeasurements_GET);
-
             it('should obtain POST body-measurements query', _GenerateQueries__BodyMeasurements_POST);
-
             it('should NOT obtain DELETE body-measurements query', _GenerateQueries__BodyMeasurements_DELETE);
-
         });
 
         describe('Body Weights', function(){
-
             it('should obtain GET body-weights query', _GenerateQueries__BodyWeights_GET);
-
             it('should obtain POST body-weights query', _GenerateQueries__BodyWeights_POST);
-
             it('should obtain DELETE body-weights query', _GenerateQueries__BodyWeights_DELETE);
-
         });
-
 
         describe('Body Fat', function(){
-
             it('should obtain GET body-fat query', _GenerateQueries__BodyFat_GET);
-
             it('should obtain POST body-fat query', _GenerateQueries__BodyFat_POST);
-
             it('should obtain DELETE body-fat query', _GenerateQueries__BodyFat_DELETE);
-
         });
 
-
-        describe('Badge', function(){
-
-            it('should obtain GET badge query', _GenerateQueries__Badge_GET);
-
-            it('should obtain POST badge query', _GenerateQueries__Badge_POST);
-
-            it('should NOT obtain DELETE badge query', _GenerateQueries__Badge_DELETE);
-
+        describe('Badges', function(){
+            it('should obtain GET badges query', _GenerateQueries__Badge_GET);
+            it('should obtain POST badges query', _GenerateQueries__Badge_POST);
+            it('should NOT obtain DELETE badges query', _GenerateQueries__Badge_DELETE);
         });
 
         describe('Time series', function(){
-// TODO
-       //     it('should obtain GET time series query', _GenerateQueries__TimeSeries_GET);
-
-        //    it('should NOT obtain POST time series query', _GenerateQueries__TimeSeries_POST);
-
-         //   it('should NOT obtain DELETE time series query', _GenerateQueries__TimeSeries_DELETE);
-
+            it('should obtain GET time series query', _GenerateQueries__TimeSeries_GET);
+            it('should NOT obtain POST time series query', _GenerateQueries__TimeSeries_POST);
+            it('should NOT obtain DELETE time series query', _GenerateQueries__TimeSeries_DELETE);
         });
 
         describe('Weight Goal', function(){
-
             it('should obtain GET weight-goal query', _GenerateQueries__WeightGoal_GET);
-
             it('should obtain POST weight-goal query', _GenerateQueries__WeightGoal_POST);
-
             it('should NOT obtain DELETE weight-goal query', _GenerateQueries__WeightGoal_DELETE);
-
         });
 
         describe('Fat Goal', function(){
-
             it('should obtain GET fat-goal query', _GenerateQueries__fatGoal_GET);
-
             it('should obtain POST fat-goal query', _GenerateQueries__fatGoal_POST);
-
             it('should obtain DELETE fat-goal query', _GenerateQueries__fatGoal_DELETE);
+        });
 
+        describe('Public Activity', function(){
+            it('should obtain GET Public activities query', _GenerateQueries__publicActivities_GET);
+            it('should obtain POST Public activities query', _GenerateQueries__publicActivities_POST);
+            it('should NOT obtain DELETE Public activities query', _GenerateQueries__publicActivities_DELETE);
         });
 
         describe('Activities', function(){
-// TODO
             it('should obtain GET activities query', _GenerateQueries__activities_GET);
-
             it('should obtain POST activities query', _GenerateQueries__activities_POST);
-
             it('should NOT obtain DELETE activities query', _GenerateQueries__activities_DELETE);
-
         });
-
 
         describe('recent-activity', function(){
-
             it('should obtain GET recent-activity query', _GenerateQueries__recentActivity_GET);
-
             it('should obtain POST recent-activity query', _GenerateQueries__recentActivity_POST);
-
             it('should obtain DELETE recent-activity query', _GenerateQueries__recentActivity_DELETE);
-
         });
 
-
         describe('frequent-activity', function(){
-
             it('should obtain GET recent-activity query', _GenerateQueries__frequentActivity_GET);
-
             it('should obtain POST recent-activity query', _GenerateQueries__frequentActivity_POST);
-
             it('should obtain DELETE recent-activity query', _GenerateQueries__frequentActivity_DELETE);
+        });
 
+        describe('favorite-activity', function(){
+            it('should obtain GET favorite-activity query', _GenerateQueries__favoriteActivity_GET);
+            it('should obtain POST favorite-activity query', _GenerateQueries__favoriteActivity_POST);
+            it('should obtain DELETE favorite-activity query', _GenerateQueries__favoriteActivity_DELETE);
         });
 
         describe('activity-daily-goal', function(){
-
             it('should obtain GET activity-daily-goal query', _GenerateQueries__activityDailyGoal_GET);
-
             it('should obtain POST activity-daily-goal query', _GenerateQueries__activityDailyGoal_POST);
-
             it('should obtain DELETE activity-daily-goal query', _GenerateQueries__activityDailyGoal_DELETE);
-
         });
 
         describe('activity-weekly-goal', function(){
-
             it('should obtain GET activity-week-goal query', _GenerateQueries__activityWeeklyGoal_GET);
-
             it('should obtain POST activity-week-goal query', _GenerateQueries__activityWeeklyGoal_POST);
-
             it('should obtain DELETE activity-week-goal query', _GenerateQueries__activityWeeklyGoal_DELETE);
-
         });
 
         describe('activity-stats', function(){
-
             it('should obtain GET activity-stats query', _GenerateQueries__activityStats_GET);
-
             it('should obtain POST activity-stats query', _GenerateQueries__activityStats_POST);
-
             it('should obtain DELETE activity-stats query', _GenerateQueries__activityStats_DELETE);
-
         });
 
+        describe('Search Food', function(){
+            it('should obtain GET search-food query', _GenerateQueries__searchFood_GET);
+            it('should obtain POST search-food query', _GenerateQueries__searchFood_POST);
+            it('should obtain DELETE search-food query', _GenerateQueries__searchFood_DELETE);
+        });
+
+        describe('Get Public food', function(){
+            // TODO
+        });
+
+        describe('Food', function(){
+            it('should obtain GET food query', _GenerateQueries__food_GET);
+            it('should obtain POST food query', _GenerateQueries__food_POST);
+            it('should obtain DELETE food query', _GenerateQueries__food_DELETE);
+        });
+
+        describe('Recent Foods', function(){
+            it('should obtain GET recent-food query', _GenerateQueries__recentFood_GET);
+            it('should obtain POST recent-food query', _GenerateQueries__recentFood_POST);
+            it('should obtain DELETE recent-food query', _GenerateQueries__recentFood_DELETE);
+        });
+
+        describe('Frequent Foods', function(){
+            it('should obtain GET recent-food query', _GenerateQueries__frequentFood_GET);
+            it('should obtain POST recent-food query', _GenerateQueries__frequentFood_POST);
+            it('should obtain DELETE recent-food query', _GenerateQueries__frequentFood_DELETE);
+        });
+
+        describe('Favorite Foods', function(){
+            it('should obtain GET recent-food query', _GenerateQueries__favoriteFood_GET);
+            it('should obtain POST recent-food query', _GenerateQueries__favoriteFood_POST);
+            it('should obtain DELETE recent-food query', _GenerateQueries__favoriteFood_DELETE);
+        });
+
+        describe('Water', function(){
+            it('should obtain GET recent-food query', _GenerateQueries__water_GET);
+            it('should obtain POST recent-food query', _GenerateQueries__water_POST);
+            it('should obtain DELETE recent-food query', _GenerateQueries__water_DELETE);
+        });
+
+        describe('Meals', function(){
+            it('should obtain GET meals query', _GenerateQueries__meals_GET);
+            it('should obtain POST meals query', _GenerateQueries__meals_POST);
+            it('should obtain DELETE meals query', _GenerateQueries__meals_DELETE);
+        });
+
+        describe('Sleep', function(){
+            it('should obtain GET sleep query', _GenerateQueries__sleep_GET);
+            it('should obtain POST sleep query', _GenerateQueries__sleep_POST);
+            it('should obtain DELETE sleep query', _GenerateQueries__sleep_DELETE);
+        });
+
+        describe('Glucose', function(){
+            it('should obtain GET glucose query', _GenerateQueries__glucose_GET);
+            it('should obtain POST glucose query', _GenerateQueries__glucose_POST);
+            it('should obtain DELETE glucose query', _GenerateQueries__glucose_DELETE);
+        });
+
+        describe('Heart Rate', function(){
+            it('should obtain GET heart rate query', _GenerateQueries__heart_GET);
+            it('should obtain POST heart rate query', _GenerateQueries__heart_POST);
+            it('should obtain DELETE heart rate query', _GenerateQueries__heart_DELETE);
+        });
+
+        describe('Blood Pressure', function(){
+            it('should obtain GET blood pressure query', _GenerateQueries__bloodPressure_GET);
+            it('should obtain POST blood pressure query', _GenerateQueries__bloodPressure_POST);
+            it('should obtain DELETE blood pressure query', _GenerateQueries__bloodPressure_DELETE);
+        });
+
+        describe('Friends', function(){
+            it('should obtain GET friends query', _GenerateQueries__friends_GET);
+            it('should obtain POST friends query', _GenerateQueries__friends_POST);
+            it('should obtain DELETE friends query', _GenerateQueries__friends_DELETE);
+        });
+
+        describe('Leaderboard', function(){
+            it('should obtain GET leaderboard query', _GenerateQueries__leaderboard_GET);
+            it('should obtain POST leaderboard query', _GenerateQueries__leaderboard_POST);
+            it('should obtain DELETE leaderboard query', _GenerateQueries__leaderboard_DELETE);
+        });
+
+        describe('time-series', function(){
+          ///  it('should obtain GET time-series query', _GenerateQueries__timeSeries_Get);
+        })
         /** // TODO
         it('should obtain series query', _GenerateQueries__seriesQuery);
 
@@ -201,7 +238,6 @@ function _GenerateQueries__StandardGETTest(alias, stdJSONURL, dateRequired){
     createQuery = QueryService.create(value);
     expect(createQuery).to.equal(output);
 
-
     // TEST JSON with ID
     value.format = 'json';
     output = output.replace('.xml','.json');
@@ -213,7 +249,7 @@ function _GenerateQueries__StandardGETTest(alias, stdJSONURL, dateRequired){
     value.format = 'xml';
     createQuery = QueryService.create(value);
     expect(createQuery).to.equal(output);
-
+/**
     if(dateRequired){
         delete value.date;
         expect(function(){
@@ -235,7 +271,7 @@ function _GenerateQueries__StandardGETTest(alias, stdJSONURL, dateRequired){
         expect(function(){
             QueryService.create(value);
         }).to.throw("Date is not set!");
-    }
+    }**/
 }
 
 /**
@@ -500,15 +536,23 @@ function _GenerateQueries__fatGoal_DELETE(){
  * @private
  */
 function _GenerateQueries__activities_GET(){
-    // TODO
-//    var jsonURL = 'https://api.fitbit.com/1/user/-/activities/date/2010-02-21.json';
-//    _GenerateQueries__StandardGETTest('activities', jsonURL, true);
+    var jsonURL = 'https://api.fitbit.com/1/user/-/activities/date/2010-06-02.json';
+    _GenerateQueries__StandardGETTest('activities', jsonURL, true);
 }
 function _GenerateQueries__activities_POST(){
-
+    expect('todo').to.equal(true);
 }
 function _GenerateQueries__activities_DELETE(){
     _GenerateQueries__StandardNotExistTest('activities', 'DELETE');
+}
+function _GenerateQueries__publicActivities_GET(){
+    expect('todo').to.equal(true);
+}
+function _GenerateQueries__publicActivities_POST(){
+    expect('todo').to.equal(true);
+}
+function _GenerateQueries__publicActivities_DELETE(){
+    expect('todo').to.equal(true);
 }
 
 function _GenerateQueries__recentActivity_GET() {
@@ -536,7 +580,18 @@ function _GenerateQueries__frequentActivity_POST() {
 function _GenerateQueries__frequentActivity_DELETE() {
     _GenerateQueries__StandardNotExistTest('frequent-activity', 'DELETE');
 }
-
+function _GenerateQueries__favoriteActivity_GET(){
+    var jsonURL = 'https://api.fitbit.com/1/user/-/activities/favorite.json';
+    _GenerateQueries__StandardGETTest('favorite-activity', jsonURL);
+}
+function _GenerateQueries__favoriteActivity_POST(){
+    var jsonURL = 'https://api.fitbit.com/1/user/-/activities/log/favorite/1.json';
+    _GenerateQueries__StandardPOSTTest('favorite-activity',jsonURL);
+}
+function _GenerateQueries__favoriteActivity_DELETE(){
+    var jsonURL = 'https://api.fitbit.com/1/user/-/activities/log/favorite/1.json';
+    _GenerateQueries__StandardDELETETest('favorite-activity', jsonURL);
+}
 function _GenerateQueries__activityDailyGoal_GET(){
     var output = 'https://api.fitbit.com/1/user/-/activities/goals/daily.json';
     _GenerateQueries__StandardGETTest('activity-daily-goal', output);
@@ -590,4 +645,162 @@ function _GenerateQueries__activitesStatsQuery(){
  */
 function _GenerateQueries__timeSeriesQuery(){
 
+}
+
+function _GenerateQueries__food_GET(){
+    var output = 'https://api.fitbit.com/1/user/-/foods/log/date/2015-06-02.json';
+    _GenerateQueries__StandardGETTest('foods', output);
+}
+function _GenerateQueries__food_POST(){
+    expect('todo').to.equal(true);
+}
+function _GenerateQueries__food_DELETE(){
+    expect('todo').to.equal(true);
+}
+function _GenerateQueries__searchFood_GET(){
+    var output = 'https://api.fitbit.com/1/foods/search.json';
+    _GenerateQueries__StandardGETTest('search-foods', output);
+}
+function _GenerateQueries__searchFood_POST(){
+    _GenerateQueries__StandardNotExistTest('search-foods', 'POST');
+}
+function _GenerateQueries__searchFood_DELETE(){
+    _GenerateQueries__StandardNotExistTest('search-foods', 'POST');
+}
+function _GenerateQueries__recentFood_GET(){
+    var output = 'https://api.fitbit.com/1/user/-/foods/log/recent.json';
+    _GenerateQueries__StandardGETTest('recent-foods', output);
+}
+function _GenerateQueries__recentFood_POST(){
+    _GenerateQueries__StandardNotExistTest('recent-foods', 'POST');
+}
+function _GenerateQueries__recentFood_DELETE(){
+    _GenerateQueries__StandardNotExistTest('recent-foods', 'DELETE');
+}
+function _GenerateQueries__frequentFood_GET(){
+    var output = 'https://api.fitbit.com/1/user/-/foods/log/frequent.json';
+    _GenerateQueries__StandardGETTest('frequent-foods', output);
+}
+function _GenerateQueries__frequentFood_POST(){
+    _GenerateQueries__StandardNotExistTest('frequent-foods', 'POST');
+}
+function _GenerateQueries__frequentFood_DELETE(){
+    _GenerateQueries__StandardNotExistTest('frequent-foods', 'DELETE');
+}
+function _GenerateQueries__favoriteFood_GET(){
+    var output = 'https://api.fitbit.com/1/user/-/foods/log/favorite.json';
+    _GenerateQueries__StandardGETTest('favorite-foods', output);
+}
+function _GenerateQueries__favoriteFood_POST(){
+    _GenerateQueries__StandardNotExistTest('favorite-foods', 'POST');
+}
+function _GenerateQueries__favoriteFood_DELETE(){
+    _GenerateQueries__StandardNotExistTest('favorite-foods', 'DELETE');
+}
+function _GenerateQueries__water_GET(){
+    var output = 'https://api.fitbit.com/1/user/-/foods/log/water/date/2015-06-02.json';
+    _GenerateQueries__StandardGETTest('water', output);
+}
+function _GenerateQueries__water_POST(){
+    var output = 'https://api.fitbit.com/1/user/-/foods/log/water.json';
+    _GenerateQueries__StandardPOSTTest('water', output);
+}
+function _GenerateQueries__water_DELETE(){
+    expect('todo').to.equal(true);
+}
+function _GenerateQueries__meals_GET(){
+    var json = 'https://api.fitbit.com/1/user/-/meals.json';
+    _GenerateQueries__StandardGETTest('meals', json);
+}
+function _GenerateQueries__meals_POST(){
+    _GenerateQueries__StandardNotExistTest('meals', 'POST');
+}
+function _GenerateQueries__meals_DELETE(){
+    _GenerateQueries__StandardNotExistTest('meals', 'DELETE');
+}
+function _GenerateQueries__sleep_GET(){
+    var json = 'https://api.fitbit.com/1/user/-/sleep/date/2015-06-02.json';
+    _GenerateQueries__StandardGETTest('sleep', json);
+}
+function _GenerateQueries__sleep_POST(){
+    expect('TODO').to.equal(true);
+}
+function _GenerateQueries__sleep_DELETE(){
+    expect('TODO').to.equal(true);
+}
+function _GenerateQueries__heart_GET(){
+    var json = 'https://api.fitbit.com/1/user/-/heart/date/2015-06-02.json';
+    _GenerateQueries__StandardGETTest('heart-rate', json);
+}
+function _GenerateQueries__heart_POST(){
+    expect('TODO').to.equal(true);
+}
+function _GenerateQueries__heart_DELETE(){
+    expect('TODO').to.equal(true);
+}
+function _GenerateQueries__bloodPressure_GET(){
+    var json = 'https://api.fitbit.com/1/user/-/bp/date/2015-06-02.json';
+    _GenerateQueries__StandardGETTest('bloodPressure', json);
+}
+function _GenerateQueries__bloodPressure_POST(){
+    expect('TODO').to.equal(true);
+}
+function _GenerateQueries__bloodPressure_DELETE(){
+    expect('TODO').to.equal(true);
+}
+function _GenerateQueries__glucose_GET(){
+    var json = 'https://api.fitbit.com/1/user/-/glucose/date/2015-06-02.json';
+    _GenerateQueries__StandardGETTest('glucose', json);
+}
+function _GenerateQueries__glucose_POST(){
+    expect('TODO').to.equal(true);
+}
+function _GenerateQueries__glucose_DELETE(){
+    expect('TODO').to.equal(true);
+}
+function _GenerateQueries__friends_GET(){
+    var json = 'https://api.fitbit.com/1/user/-/friends.json';
+    _GenerateQueries__StandardGETTest('friends', json);
+}
+function _GenerateQueries__friends_POST(){
+    _GenerateQueries__StandardNotExistTest('friends', 'POST');
+}
+function _GenerateQueries__friends_DELETE(){
+    _GenerateQueries__StandardNotExistTest('friends', 'DELETE');
+}
+function _GenerateQueries__leaderboard_GET(){
+    var json = 'https://api.fitbit.com/1/user/-/friends/leaderboard.json';
+    _GenerateQueries__StandardGETTest('leaderboard', json);
+}
+function _GenerateQueries__leaderboard_POST(){
+    _GenerateQueries__StandardNotExistTest('leaderboard', 'POST');
+}
+function _GenerateQueries__leaderboard_DELETE(){
+    _GenerateQueries__StandardNotExistTest('leaderboard', 'DELETE');
+}
+function _GenerateQueries__TimeSeries_GET(){
+    var output = 'https://api.fitbit.com/1/user/-/sleep/minutesAsleep/date/2015-03-01/7d.json';
+    var value = {
+        method: 'GET',
+        format: 'json',
+        alias: 'time-series',
+        category: 'sleep',
+        subcategory: 'minutesAsleep',
+        date: '2015-03-01',
+        timespan: '7d'
+    }
+    var result = QueryService.create(value);
+    expect(result).to.equal(output);
+
+    output = 'https://api.fitbit.com/1/user/-/body/weight/date/2015-03-01/7d.json';
+    value.category = 'body';
+    value.subcategory = 'weight';
+    result = QueryService.create(value);
+    expect(result).to.equal(output);
+}
+function _GenerateQueries__TimeSeries_POST(){
+    _GenerateQueries__StandardNotExistTest('time-series', 'POST');
+}
+function _GenerateQueries__TimeSeries_DELETE(){
+    _GenerateQueries__StandardNotExistTest('time-series', 'DELETE');
 }

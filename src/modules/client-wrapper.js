@@ -108,16 +108,11 @@ function _getAccessToken(token, secret, verifier){
  * @param userId
  * @private
  */
-function _query(what, method, format, accessToken, accessTokenSecret, userId){
+function _query(what, inputObj){
 
-    if(/get/i.test(method) === true){
-        return  _execute(what, 'GET', format, accessToken, accessTokenSecret, userId);
-    }
-    else if(/(set|update|post)/i.test(method) === true){
-        return  _execute(what, 'POST', format, accessToken, accessTokenSecret, userId);
-    }
-    else if(/delete/i.test(method) === true ){
-        return _execute(what, 'DELETE', accessToken, accessTokenSecret, userId);
+
+    if(/(get|set|update|post|delete)/i.test(inputObj.method) === true){
+        return _execute(what, inputObj);
     }
     else{
         throw "Invalid Query Format Type";
@@ -139,7 +134,7 @@ function _query(what, method, format, accessToken, accessTokenSecret, userId){
  * @param userId
  * @private
  */
-function _execute(what, method, format, accessToken, accessTokenSecret, userId){
+function _execute(what, inputObj){
 
     return new Promise(function(resolve, reject){
 
@@ -153,16 +148,15 @@ function _execute(what, method, format, accessToken, accessTokenSecret, userId){
         }
 
         what.forEach(function (item) {
-            var obj = {}
-            obj.alias = item;
-            obj.format = format;
-            obj.method = method;
-            obj.userId = userId;
 
-            var query = QueryService.create(obj);
+            inputObj.alias = item;
+
+            var query = QueryService.create(inputObj);
+
             query = query.split(/user\/(-|[0-9]+)/).pop();
+
             console.log('query',query);
-            asyncStack.push(_asyncRequestResourceClosure(query, method, accessToken, accessTokenSecret, userId));
+            asyncStack.push(_asyncRequestResourceClosure(query, inputObj.method, inputObj.accessToken, inputObj.accessTokenSecret, inputObj.userId));
 
         });
 
