@@ -106,7 +106,14 @@ var FitbitApiClient = {};
                 if(err){
                     return reject(err);
                 }
-                resolve(data);
+                var json;
+                try{
+                    json = JSON.parse(data);
+                }catch(err){
+                    console.log('JSON PARSE err',err);
+                    json = data;
+                }
+                resolve(json);
             });
         });
     };
