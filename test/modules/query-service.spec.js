@@ -125,6 +125,10 @@ describe('Query Service', function(){
             // TODO
         });
 
+        describe('Food Units', function(){
+            it('should obtain GET food-units query', _GenerateQueries__foodunits_GET);
+        });
+
         describe('Food', function(){
             it('should obtain GET food query', _GenerateQueries__food_GET);
             it('should obtain POST food query', _GenerateQueries__food_POST);
@@ -185,6 +189,16 @@ describe('Query Service', function(){
             it('should obtain DELETE blood pressure query', _GenerateQueries__bloodPressure_DELETE);
         });
 
+        describe('Invitations', function(){
+            it('should obtain GET invitations query', _GenerateQueries__invitations_GET);
+            it('should obtain POST invitations query', _GenerateQueries__invitations_POST);
+            it('should obtain DELETE invitations query', _GenerateQueries__invitations_DELETE);
+        });
+
+        describe('Create Invite', function(){
+            it('should obtain POST create invite query', _GenerateQueries__createInvite_POST);
+        });
+
         describe('Friends', function(){
             it('should obtain GET friends query', _GenerateQueries__friends_GET);
             it('should obtain POST friends query', _GenerateQueries__friends_POST);
@@ -201,13 +215,21 @@ describe('Query Service', function(){
             it('should obtain GET time-series query', _GenerateQueries__timeSeries_Get);
             it('should obtain GET time-series query handle error', _GenerateQueries__timeSeries_Get_HandleError);
         });
-        /** // TODO
-        it('should obtain series query', _GenerateQueries__seriesQuery);
 
-        it('should obtain activity-stats query', _GenerateQueries__activitesStatsQuery);
+        describe('Alarm', function(){
+            it('should obtain GET Alarm query', _GenerateQueries__alarm_GET);
+            it('should obtain POST Alarm query', _GenerateQueries__alarm_POST);
+            it('should obtain DELETE Alarm query', _GenerateQueries__alarm_DELETE);
+            it('should obtain GET create-alarm query', _GenerateQueries__createAlarm_POST);
+        });
 
-        it('should obtain time-series query', _GenerateQueries__timeSeriesQuery);
-         **/
+        describe('Devices', function(){
+            it('should obtain GET devices query', _GenerateQueries__devices_GET);
+        });
+
+        describe('Device', function(){
+            it('should obtain GET device query', _GenerateQueries__device_GET);
+        })
 
     });
 });
@@ -241,7 +263,6 @@ function _GenerateQueries__StandardGETTest(alias, stdJSONURL, dateRequired, appe
             value.data = {};
         }
         value.data.id = id;
-        console.log('igotdd',id);
     }
 
     var createQuery = QueryService.create(value);
@@ -301,7 +322,7 @@ function _GenerateQueries__StandardPOSTTest(alias, stdJSONURL, appendId){
     };
 
     if(appendId){ // few calls require appending Id
-        var idmch = stdJSONURL.match(/[0-9]\.json/);
+        var idmch = stdJSONURL.match(/[0-9]+\.json/);
         var id = idmch[0].split('.')[0];
         console.log('id',id);
         value.data = {id: id};
@@ -665,6 +686,10 @@ function _GenerateQueries__activityStats_POST(){
 function _GenerateQueries__activityStats_DELETE(){
     _GenerateQueries__StandardNotExistTest('activity-stats', 'DELETE');
 }
+function _GenerateQueries__foodunits_GET(){
+    var json = 'https://api.fitbit.com/1/foods/units.json';
+    _GenerateQueries__StandardGETTest('food-units', json);
+}
 function _GenerateQueries__food_GET(){
     var output = 'https://api.fitbit.com/1/user/-/foods/log/date/2015-06-02.json';
     _GenerateQueries__StandardGETTest('foods', output);
@@ -786,6 +811,21 @@ function _GenerateQueries__glucose_POST(){
 }
 function _GenerateQueries__glucose_DELETE(){
     _GenerateQueries__StandardNotExistTest('glucose','DELETE');
+}
+function _GenerateQueries__invitations_GET(){
+    var json = 'https://api.fitbit.com/1/user/-/friends/invitations.json';
+    _GenerateQueries__StandardGETTest('invitations', json);
+}
+function _GenerateQueries__invitations_POST(){
+    var json = 'https://api.fitbit.com/1/user/-/friends/invitations/222.json';
+    _GenerateQueries__StandardPOSTTest('invitations', json, true);
+}
+function _GenerateQueries__invitations_DELETE(){
+    _GenerateQueries__StandardNotExistTest('invitations', 'DELETE');
+}
+function _GenerateQueries__createInvite_POST(){
+    var json = 'https://api.fitbit.com/1/user/-/friends/invitations.json';
+    _GenerateQueries__StandardPOSTTest('create-invite', json);
 }
 function _GenerateQueries__friends_GET(){
     var json = 'https://api.fitbit.com/1/user/-/friends.json';
@@ -928,4 +968,73 @@ function _GenerateQueries__timeSeries_Get_HandleError(){
         QueryService.create(value);
     }).to.throw("Category does not match subcategory");
 
+}
+
+function _GenerateQueries__alarm_GET(){
+    var json = 'https://api.fitbit.com/1/user/-/devices/tracker/55777/alarms.json';
+
+    var values = {
+        alias: 'alarm',
+        method: 'GET',
+        format: 'json',
+        data: {
+            id: '55777'
+        }
+    };
+    var result = QueryService.create(values);
+    expect(result).to.equal(json);
+}
+
+function _GenerateQueries__alarm_POST(){
+    var json = 'https://api.fitbit.com/1/user/-/devices/tracker/55777/alarms/123.json';
+
+    var values = {
+        alias: 'alarm',
+        method: 'POST',
+        format: 'json',
+        data: {
+            deviceId: '55777',
+            alarmId: '123'
+        }
+    };
+    var result = QueryService.create(values);
+    expect(result).to.equal(json);
+}
+
+function _GenerateQueries__alarm_DELETE(){
+    var json = 'https://api.fitbit.com/1/user/-/devices/tracker/55777/alarms/123.json';
+
+    var values = {
+        alias: 'alarm',
+        method: 'DELETE',
+        format: 'json',
+        data: {
+            deviceId: '55777',
+            alarmId: '123'
+        }
+    };
+    var result = QueryService.create(values);
+    expect(result).to.equal(json);
+}
+
+function _GenerateQueries__devices_GET(){
+    var json = 'https://api.fitbit.com/1/user/-/devices.json';
+    _GenerateQueries__StandardGETTest('devices', json);
+}
+function _GenerateQueries__device_GET(){
+    var json = 'https://api.fitbit.com/1/user/-/devices/345.json';
+    _GenerateQueries__StandardGETTest('device', json, false, true);
+}
+function _GenerateQueries__createAlarm_POST(){
+    var json = 'https://api.fitbit.com/1/user/-/devices/tracker/55777/alarms.json';
+    var values = {
+        alias: 'createAlarm',
+        method: 'POST',
+        format: 'json',
+        data: {
+            deviceId: '55777'
+        }
+    };
+    var result = QueryService.create(values);
+    expect(result).to.equal(json);
 }

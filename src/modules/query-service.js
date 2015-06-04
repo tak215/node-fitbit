@@ -70,6 +70,14 @@ function _create__query(value){
                     query = query.replace(/\/user\/(-|[0-9]+)/,'');
                 }
 
+                // Add id to the corresponding placeholder
+                if(dict.idPlaceholder){
+                    if(!value.data) throw "ID placeholder must be set";
+                    dict.idPlaceholder.forEach(function(item){
+                        query = query.replace('{{}}', value.data[item]);
+                    });
+                }
+
                 // if it's a time series object, then add necessary parameter before the date
                 if(dict.timeSeries === true) {
 
@@ -140,8 +148,10 @@ function _create__query(value){
 
                 // if it's a delete query, append ID parameter (required for all ID)
                 if(value.method === 'DELETE'){
-                    if(value.data === undefined || value.data.id === undefined) throw "Delete ID cannot be undefined";
-                    query += value.data.id;
+                    if(!dict.idPlaceholder) {
+                        if (value.data === undefined || value.data.id === undefined) throw "Delete ID cannot be undefined";
+                        query += value.data.id;
+                    }
                 }
                 else if(dict.appendId){
                     // if some odd cases, it needs to append ID for POST calls, the id needs to be defined

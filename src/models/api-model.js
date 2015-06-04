@@ -211,8 +211,8 @@ var APIModel = {
         publicActivity:{
             GET: {
                 publicParam: true,
-                url: 'activities/',
-                appendId: true
+                url: 'activities/{{}}',
+                idPlaceholder: ['id']
             }
         },
         timeSeries:{
@@ -291,9 +291,7 @@ var APIModel = {
             POST: {
                 url: 'activities/log/favorite/',
                 appendId: true,
-                dataParams:[
-
-                ]
+                dataParams:[]
             },
             DELETE: {
                 url: 'activities/favorite/'
@@ -420,6 +418,12 @@ var APIModel = {
                 url: 'apiSubscriptions'
             }
         },
+        device:{
+            GET: {
+                url: 'devices/{{}}',
+                idPlaceholder: ['id']
+            }
+        },
         devices:{
             GET: {
                 url: 'devices'
@@ -428,6 +432,21 @@ var APIModel = {
         invitations: {
             GET: {
                 url: 'friends/invitations'
+            },
+            POST: {
+                url: 'friends/invitations/',
+                appendId: true,
+                dataParams:[
+                    'accept'
+                ]
+            }
+        },
+        createInvite:{
+            POST: {
+                url: 'friends/invitations',
+                dataParams:[
+                    'invitedUserEmail'
+                ]
             }
         },
         friends: {
@@ -438,6 +457,26 @@ var APIModel = {
         leaderboard: {
             GET: {
                 url: 'friends/leaderboard'
+            }
+        },
+        alarm: {
+            GET: {
+                url: 'devices/tracker/{{}}/alarms',
+                idPlaceholder: ['id']
+            },
+            POST: {
+                url: 'devices/tracker/{{}}/alarms/{{}}',
+                idPlaceholder: ['deviceId','alarmId']
+            },
+            DELETE: {
+                url: 'devices/tracker/{{}}/alarms/{{}}',
+                idPlaceholder: ['deviceId','alarmId']
+            }
+        },
+        createAlarm:{
+            POST: {
+                url: 'devices/tracker/{{}}/alarms',
+                idPlaceholder: ['deviceId']
             }
         }
 
