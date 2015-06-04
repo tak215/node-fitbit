@@ -193,8 +193,9 @@ describe('Query Service', function(){
         });
 
         describe('time-series', function(){
-          ///  it('should obtain GET time-series query', _GenerateQueries__timeSeries_Get);
-        })
+            it('should obtain GET time-series query', _GenerateQueries__timeSeries_Get);
+            it('should obtain GET time-series query handle error', _GenerateQueries__timeSeries_Get_HandleError);
+        });
         /** // TODO
         it('should obtain series query', _GenerateQueries__seriesQuery);
 
@@ -803,4 +804,99 @@ function _GenerateQueries__TimeSeries_POST(){
 }
 function _GenerateQueries__TimeSeries_DELETE(){
     _GenerateQueries__StandardNotExistTest('time-series', 'DELETE');
+}
+function _GenerateQueries__timeSeries_Get(){
+
+    var value = {
+        method: 'GET',
+        format: 'json',
+        randomVar: 'bla',
+        date: '2015-03-02',
+        startDate: '2015-03-05',
+        endDate: '2015-04-01',
+        timespan: '7d',
+        category: 'sleep',
+        subcategory: 'startTime',
+        alias: 'time-series'
+    };
+
+    /** It should use start date and end date */
+    var getResult = QueryService.create(value);
+    var output = 'https://api.fitbit.com/1/user/-/sleep/startTime/date/2015-03-05/2015-04-01.json';
+    expect(getResult).to.equal(output);
+
+    /** It should create appropriate category/subcategory relation */
+    value.category = 'activities';
+    value.subcategory = 'tracker/distance';
+    getResult = QueryService.create(value);
+    output = 'https://api.fitbit.com/1/user/-/activities/tracker/distance/date/2015-03-05/2015-04-01.json';
+    expect(getResult).to.equal(output);
+
+    /** It should use date and timespan if stardate/enddate are not defined */
+    value.category = 'sleep';
+    value.subcategory = 'startTime';
+    delete value.endDate;
+    delete value.startDate;
+    getResult = QueryService.create(value);
+    output = 'https://api.fitbit.com/1/user/-/sleep/startTime/date/2015-03-02/7d.json';
+    expect(getResult).to.equal(output);
+
+    /** It should use today's date and 7d as timespan if date and timespan is not defined */
+    var d = new Date();
+    var yr = d.getUTCFullYear();
+    var mo = d.getUTCMonth() + 1;
+    if(mo < 10) mo = '0' + mo;
+    var da = d.getUTCDate();
+    if(da < 10) da = '0' + da;
+    var todayDate = yr + '-' + mo + '-' + da;
+
+    delete value.date;
+    delete value.timespan;
+    getResult = QueryService.create(value);
+    output = 'https://api.fitbit.com/1/user/-/sleep/startTime/date/'+todayDate+'/7d.json';
+    expect(getResult).to.equal(output);
+
+}
+
+
+function _GenerateQueries__timeSeries_Get_HandleError(){
+
+    var value = {
+        method: 'GET',
+        format: 'json',
+        randomVar: 'bla',
+        date: '2015-03-02',
+        startDate: '2015-03-05',
+        endDate: '2015-04-01',
+        timespan: '7d',
+        category: 'sleep',
+        subcategory: 'startTime',
+        alias: 'time-series'
+    };
+    /** It should throw if category or subcategory is not defined */
+    delete value.subcategory;
+    expect(function(){
+        QueryService.create(value);
+    }).to.throw('Categories are not defined');
+
+    delete value.category;
+    value.subcategory = 'weight';
+    expect(function(){
+        QueryService.create(value);
+    }).to.throw('Categories are not defined');
+
+    /** It should throw if category does not exist */
+    value.category = 'blaadsfsadf';
+    value.subcategory = 'weight';
+    expect(function(){
+        QueryService.create(value);
+    }).to.throw("Invalid category");
+
+    /** It should throw if category and subcategory do not match */
+    value.category = 'body';
+    value.subcategory = 'sleep';
+    expect(function(){
+        QueryService.create(value);
+    }).to.throw("Category does not match subcategory");
+
 }

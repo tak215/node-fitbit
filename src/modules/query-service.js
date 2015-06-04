@@ -49,6 +49,7 @@ function _create__query(value){
         throw "Get query must be an object";
     }
 
+    if(!value.alias) throw "Invalid alias";
     // user Resource URL
     var query = config.userResourceURL;
 
@@ -70,31 +71,71 @@ function _create__query(value){
                 }
 
                 // if it's a time series object, then add necessary parameter before the date
-                if(dict.timeSeries === true){
-                    dict.dateRequired = true;
-                    if(!value.category || !value.subcategory){
+                if(dict.timeSeries === true) {
+
+                    if (!value.category || !value.subcategory) {
                         throw "Categories are not defined";
                     }
+
+                    // Make sure categories and subcategories match
+                    var exists = false;
+                    for(var i = 0; i < dict.categories.length; i++){
+                        if(dict.categories[i].category === value.category){
+                            exists = true;
+                            if(dict.categories[i].subcategories.indexOf(value.subcategory) < 0){
+                                throw "Category does not match subcategory";
+                            }
+                        }
+                    }
+                    if(!exists) throw "Invalid category";
+
+                    // add category and sub-category
                     query += value.category + '/' + value.subcategory + '/date/';
-                }
 
-                // if date is listed, then add that to the parameter
-                if(dict.dateRequired === true ){
-                    if(!value.date)
-                    value.date = '2015-06-02'; // TODO put today's date
-                   // throw "Date is not set!";
-                    if(value.date) {
-                        query +=  value.date;
+                    // if startDate and endDate are placed, use that over date and timespan
+                    if(value.startDate && value.endDate){
+                        var start = new Date('2015-03-05');
+                        var end = new Date('2015-04-01');
+                        if(end < start){
+                            throw "End time cannot be less than start time";
+                        }
+                        query += value.startDate + '/' + value.endDate;
+
+                    } else{
+                    // if starDate and endDate are not placed,
+                    // then use specified date or today's date
+                    // and use a default timespan
+                        if(value.date){
+                            query += value.date + '/';
+                        } else if(value.startDate){
+                            query += value.startDate + '/';
+                        } else{
+                            // use today's date
+                            var d = new Date();
+                            var yr = d.getUTCFullYear();
+                            var mo = d.getUTCMonth() + 1;
+                            if(mo < 10) mo = '0' + mo;
+                            var da = d.getUTCDate();
+                            if(da < 10) da = '0' + da;
+                            var todayDate = yr + '-' + mo + '-' + da;
+                            query += todayDate + '/';
+                        }
+
+                        // add timespan if exists or use default
+                        query += value.timespan || '7d';
                     }
                 }
 
-
-                // if timespan is required
-                if(dict.timeSeries === true){
-                    if(!value.timespan){
-                        value.timespan = '7d';
+                else {
+                    // if date is listed, then add that to the parameter
+                    if (dict.dateRequired === true) {
+                        if (!value.date)
+                            value.date = '2015-06-02'; // TODO put today's date
+                        // throw "Date is not set!";
+                        if (value.date) {
+                            query += value.date;
+                        }
                     }
-                    query += '/' + value.timespan;
                 }
 
                 // if it's a delete query, append ID parameter (required for all ID)

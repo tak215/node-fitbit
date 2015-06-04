@@ -158,7 +158,7 @@ var APIModel = {
                     'startTime',// required Start time; hours and minutes in the format HH:mm
                     'durationMillis',// required Duration; in milliseconds
                     'date',// required Log entry date; in the format yyyy-MM-dd
-                    'distance', // optional/required Distance; required for logging directory activity; in the format X.XX, in the selected distanceUnit or in the unit system that corresponds to the Accept-Language header provided
+                    'distance', // optional/required Distanfce; required for logging directory activity; in the format X.XX, in the selected distanceUnit or in the unit system that corresponds to the Accept-Language header provided
                     'distanceUnit' //optional Distance measurement unit; Steps units are available only for "Walking" (activityId=90013) and "Running" (activityId=90009) directory activities and their intensity levels
                 ]
             }
@@ -179,6 +179,58 @@ var APIModel = {
             GET: {
                 url: '',
                 timeSeries: true,
+                categories: [{
+                    category: 'body',
+                    subcategories: [
+                        'fat',
+                        'weight',
+                        'bmi'
+                    ]
+                },{
+                    category: 'activities',
+                    subcategories: [
+                        'calories',
+                        'caloriesBMR',
+                        'steps',
+                        'distance',
+                        'floors',
+                        'elevation',
+                        'heart',
+                        'minutesSedentary',
+                        'minutesLightlyActive',
+                        'minutesFairlyActive',
+                        'minutesVeryActive',
+                        'activityCalories',
+                        'tracker/calories',
+                        'tracker/steps',
+                        'tracker/distance',
+                        'tracker/floors',
+                        'tracker/elevation',
+                        'tracker/minutesSedentary',
+                        'tracker/minutesLightlyActive',
+                        'tracker/minutesFairlyActive',
+                        'tracker/minutesVeryActive',
+                        'tracker/activityCalories'
+                    ]
+                },{
+                    category: 'sleep',
+                    subcategories: [
+                        'startTime',
+                        'timeInBed',
+                        'minutesAsleep',
+                        'awakeningsCount',
+                        'minutesAwake',
+                        'minutesToFallAsleep',
+                        'minutesAfterWakeup',
+                        'efficiency'
+                    ]
+                },{
+                    category: 'foods',
+                    subcategories: [
+                        'caloriesIn',
+                        'water'
+                    ]
+                }],
                 dateRequired: true // will be true by default
             }
         },

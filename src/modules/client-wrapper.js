@@ -143,7 +143,7 @@ function _execute(what, inputObj){
         if(!what){
             return reject("invalid what type");
         }
-        if(isArray(what) !== true){
+        if(isArray(what) !== true) {
             what = [what];
         }
 
@@ -165,7 +165,8 @@ function _execute(what, inputObj){
                 if(err && (!results || results.length < 1)){
                     return reject(err);
                 } else if(err){
-                    console.log("Error occurred :: " + err);
+                    console.log("Error occurred :: ");
+                    console.log(err);
                 }
                 results.map(function(item){
                     return item.data;
