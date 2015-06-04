@@ -143,12 +143,22 @@ function _create__query(value){
                     if(value.data === undefined || value.data.id === undefined) throw "Delete ID cannot be undefined";
                     query += value.data.id;
                 }
+                else if(dict.appendId){
+                    // if some odd cases, it needs to append ID for POST calls, the id needs to be defined
+                    // and should not collide with appending id for delete method
+                    if(value.id === undefined && (!value.data || !value.data.id)){
+                        console.log('value',value);
+                        throw "ID is required for this call";
+                    }
+                    // take data.id as precedence over value.id
+                    query += (value.data ? value.data.id : value.id) || value.id;
+                }
 
                 // append format type (json, xml)
                 query += '.' + value.format.toLowerCase();
 
                 // POST queries need to add parameters after extension with ?
-                if(dict.dataParams){
+                if(dict.dataParams && !dict.appendId){
                     query += '?';
                     var params = value.data;
                     if(!params){

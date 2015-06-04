@@ -12,6 +12,7 @@ var APIModel = {
             POST: {
                 url: 'profile',
                 dataParams: [
+                    // all optional but at least one required
                     'gender', //Gender; (MALE/FEMALE/NA)
                     'birthday', //Date of Birth; in the format yyyy-MM-dd
                     'height', //Height; in the format X.XX, in the unit system that corresponds to the Accept-Language header provided
@@ -95,24 +96,59 @@ var APIModel = {
             GET: {
                 url: 'sleep/date/',
                 dateRequired: true
+            },
+            POST: {
+                url: 'sleep',
+                dataParams: [
+                    'startTime', //Start time; hours and minutes in the format HH:mm
+                    'duration',  // Duration; in milliseconds
+                    'date'       // Log entry date; in the format yyyy-MM-dd
+                ]
+            },
+            DELETE: {
+                url: 'sleep/'
             }
         },
         heartRate:{
             GET: {
                 url: 'heart/date/',
                 dateRequired: true
+            },
+            POST: {
+                url: 'heart',
+                dataParams:[
+                    'tracker','heartRate','date'
+                ]
+            },
+            DELETE: {
+                url: 'heart/'
             }
         },
         glucose: {
             GET: {
                 url: 'glucose/date/',
                 dateRequired: true
+            },
+            POST: {
+                url: 'glucose',
+                dataParams:[
+                    'tracker','glucose=3','date'
+                ]
             }
         },
         bloodPressure: {
             GET: {
                 url: 'bp/date/',
                 dateRequired: true
+            },
+            POST: {
+                url: 'bp',
+                dataParams:[
+                    'systolic','diastolic','date'
+                ]
+            },
+            DELETE: {
+                url: 'bp/'
             }
         },
         badges: {
@@ -161,18 +197,22 @@ var APIModel = {
                     'distance', // optional/required Distanfce; required for logging directory activity; in the format X.XX, in the selected distanceUnit or in the unit system that corresponds to the Accept-Language header provided
                     'distanceUnit' //optional Distance measurement unit; Steps units are available only for "Walking" (activityId=90013) and "Running" (activityId=90009) directory activities and their intensity levels
                 ]
+            },
+            DELETE: {
+                url: 'activities/'
             }
         },
         browsePublicActivities:{
             GET: {
                 publicParam: true,
-                url: '1/activities'
+                url: 'activities'
             }
         },
         publicActivity:{
             GET: {
                 publicParam: true,
-                url: 'activities/'
+                url: 'activities/',
+                appendId: true
             }
         },
         timeSeries:{
@@ -249,7 +289,14 @@ var APIModel = {
                 url: 'activities/favorite'
             },
             POST: {
-                url: 'activities/log/favorite/'
+                url: 'activities/log/favorite/',
+                appendId: true,
+                dataParams:[
+
+                ]
+            },
+            DELETE: {
+                url: 'activities/favorite/'
             }
         },
         activityDailyGoal: {
@@ -285,19 +332,27 @@ var APIModel = {
                 url: 'activities'
             }
         },
-        searchFood:{
-            GET: {
-                publicParam: true,
-                url: 'foods/search'
-            }
-        },
         foods: {
             GET: {
                 dateRequired: true,
                 url: 'foods/log/date/'
             },
             POST: {
-                url: 'foods/log'
+                url: 'foods/log',
+                dataParams: [
+                    'foodId',       //  optional/required    Food id
+                    'foodName',     // optional/required  Food entry name; either foodId or foodName should be provided
+                    'brandName',    // optional Brand name; valid only with foodName parameter
+                    'calories',     // optional Calories for this serving size; allowed with foodName parameter (defaults to 0), otherwise ignored
+                    'mealTypeId',   //  required    Meal type id; (1 – Breakfast; 2 – Morning Snack; 3 – Lunch; 4 – Afternoon Snack; 5 – Dinner; 7 – Anytime)
+                    'unitId',       //  required    Unit id; typically retrieved via a previous calls to Get Foods (Recent, Frequent, Favorite), Search Foods or Get Food Units
+                    'amount',       //  required    Amount consumed; in the format X.XX, in a selected unit (unitId)
+                    'date',         //    required    Log entry date; in the format yyyy-MM-dd
+                    'favorite'      //    optional    Add food to favorites after creating log entry?; valid only with foodId; (true/false)
+                ]
+            },
+            DELETE: {
+                url: 'foods/log/',
             }
         },
         recentFoods: {
@@ -308,6 +363,9 @@ var APIModel = {
         favoriteFoods: {
             GET: {
                 url: 'foods/log/favorite'
+            },
+            DELETE: {
+                url: 'foods/log/favorite/'
             }
         },
         frequentFoods: {
@@ -318,7 +376,7 @@ var APIModel = {
         searchFoods:{
             GET: {
                 publicParam: true,
-                url: 'foods/',
+                url: 'foods/search',
                 addQuery: true
             }
         },
@@ -340,11 +398,16 @@ var APIModel = {
                 url: 'foods/log/water/date/'
             },
             POST: {
-                dateRequired: true,
-                url: 'foods/log/water/'
+                dateRequired: false,
+                url: 'foods/log/water',
+                dataParams:[
+                    'amount',   // required Amount consumed; in the format X.X, in the selected waterUnit or in the unit system that corresponds to the Accept-Language header provided
+                    'date',     // required Log entry date; in the format yyyy-MM-dd
+                    'unit'      // optional Water measurement unit; ("ml", "fl oz" or "cup")
+                ]
             },
             DELETE: {
-                url: 'foods/log/water'
+                url: 'foods/log/water/'
             }
         },
         meals: {

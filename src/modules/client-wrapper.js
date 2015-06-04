@@ -153,7 +153,6 @@ function _execute(what, inputObj){
 
             var query = QueryService.create(inputObj);
 
-            query = query.split(/(user\/(-|[0-9]+)|\/1)/).pop();
 
             console.log('query',query);
             asyncStack.push(_asyncRequestResourceClosure(query, inputObj.method, inputObj.accessToken, inputObj.accessTokenSecret, inputObj.userId));

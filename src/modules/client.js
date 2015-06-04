@@ -95,15 +95,13 @@ var FitbitApiClient = {};
      * @returns {Promise}
      *
      */
-    FitbitApiClient.requestResource = function(path, method, accessToken, accessTokenSecret, userId) {
+    FitbitApiClient.requestResource = function(url, method, accessToken, accessTokenSecret, userId) {
         var that = this;
         return new Promise(function(resolve, reject) {
-            if(!path || !method || !accessToken || !accessTokenSecret){
+            if(!url || !method || !accessToken || !accessTokenSecret){
                 return reject("Client::requestResource => Invalid Parameters");
             }
-            var url = config.userResourceURL + (userId || "-") + path;
             that.oauth.getProtectedResource(url, method, accessToken, accessTokenSecret, function(err, data, response){
-                console.log('response',response.statusCode);
                 if(err || response.statusCode == '429'){
                     return reject(err);
                 }

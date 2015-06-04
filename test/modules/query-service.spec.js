@@ -66,12 +66,17 @@ describe('Query Service', function(){
             it('should obtain GET Public activities query', _GenerateQueries__publicActivities_GET);
             it('should obtain POST Public activities query', _GenerateQueries__publicActivities_POST);
             it('should NOT obtain DELETE Public activities query', _GenerateQueries__publicActivities_DELETE);
+
+            it('should obtain GET specific public activity query', _GenerateQueries__specificPublicActivity_GET);
+            it('should obtain POST specific public activity query', _GenerateQueries__specificPublicActivity_POST);
+            it('should NOT obtain DELETE specific public activity query', _GenerateQueries__specificPublicActivity_DELETE);
         });
+
 
         describe('Activities', function(){
             it('should obtain GET activities query', _GenerateQueries__activities_GET);
             it('should obtain POST activities query', _GenerateQueries__activities_POST);
-            it('should NOT obtain DELETE activities query', _GenerateQueries__activities_DELETE);
+            it('should obtain DELETE activities query', _GenerateQueries__activities_DELETE);
         });
 
         describe('recent-activity', function(){
@@ -133,21 +138,21 @@ describe('Query Service', function(){
         });
 
         describe('Frequent Foods', function(){
-            it('should obtain GET recent-food query', _GenerateQueries__frequentFood_GET);
-            it('should obtain POST recent-food query', _GenerateQueries__frequentFood_POST);
-            it('should obtain DELETE recent-food query', _GenerateQueries__frequentFood_DELETE);
+            it('should obtain GET Frequent-food query', _GenerateQueries__frequentFood_GET);
+            it('should obtain POST Frequent-food query', _GenerateQueries__frequentFood_POST);
+            it('should obtain DELETE Frequent-food query', _GenerateQueries__frequentFood_DELETE);
         });
 
         describe('Favorite Foods', function(){
-            it('should obtain GET recent-food query', _GenerateQueries__favoriteFood_GET);
-            it('should obtain POST recent-food query', _GenerateQueries__favoriteFood_POST);
-            it('should obtain DELETE recent-food query', _GenerateQueries__favoriteFood_DELETE);
+            it('should obtain GET Favorite-food query', _GenerateQueries__favoriteFood_GET);
+            it('should obtain POST Favorite-food query', _GenerateQueries__favoriteFood_POST);
+            it('should obtain DELETE Favorite-food query', _GenerateQueries__favoriteFood_DELETE);
         });
 
         describe('Water', function(){
-            it('should obtain GET recent-food query', _GenerateQueries__water_GET);
-            it('should obtain POST recent-food query', _GenerateQueries__water_POST);
-            it('should obtain DELETE recent-food query', _GenerateQueries__water_DELETE);
+            it('should obtain GET Water query', _GenerateQueries__water_GET);
+            it('should obtain POST Water query', _GenerateQueries__water_POST);
+            it('should obtain DELETE Water query', _GenerateQueries__water_DELETE);
         });
 
         describe('Meals', function(){
@@ -215,7 +220,7 @@ describe('Query Service', function(){
  * @param dateRequired
  * @private
  */
-function _GenerateQueries__StandardGETTest(alias, stdJSONURL, dateRequired){
+function _GenerateQueries__StandardGETTest(alias, stdJSONURL, dateRequired, appendId){
 
     // TEST JSON with no ID
     var output  = stdJSONURL;
@@ -228,6 +233,15 @@ function _GenerateQueries__StandardGETTest(alias, stdJSONURL, dateRequired){
         date = stdJSONURL.match(/[\d-]+.(xml|json)$/);
         date = date[0].substring(0, 10);
         value.date = date;
+    }
+    if(appendId){
+        var nummch = stdJSONURL.match(/[0-9]+.json/);
+        var id = nummch[0].split('.')[0];
+        if(!value.data){
+            value.data = {};
+        }
+        value.data.id = id;
+        console.log('igotdd',id);
     }
 
     var createQuery = QueryService.create(value);
@@ -278,13 +292,20 @@ function _GenerateQueries__StandardGETTest(alias, stdJSONURL, dateRequired){
 /**
  * Standard POST Test
  */
-function _GenerateQueries__StandardPOSTTest(alias, stdJSONURL){
+function _GenerateQueries__StandardPOSTTest(alias, stdJSONURL, appendId){
     // TEST JSON with no ID
     var output  = stdJSONURL;
     var value   = {
         alias: alias,
         method: 'POST'
     };
+
+    if(appendId){ // few calls require appending Id
+        var idmch = stdJSONURL.match(/[0-9]\.json/);
+        var id = idmch[0].split('.')[0];
+        console.log('id',id);
+        value.data = {id: id};
+    }
 
     var postQuery = QueryService.create(value);
     expect(postQuery).to.equal(output);
@@ -311,22 +332,32 @@ function _GenerateQueries__StandardPOSTTest(alias, stdJSONURL){
 
     // add parameters
 
-    // user name specified
-    output += '?gender=MALE&birthday=2015-02-15';
-    value.data = {
-        gender: 'MALE',
-        birthday: '2015-02-15'
-    };
-    postQuery = QueryService.create(value);
+    if(!appendId) {
+        // user name specified
+        output += '?gender=MALE&birthday=2015-02-15';
+        if (!value.data) {
+            value.data = {};
+        }
+        value.data.gender = 'MALE';
+        value.data.birthday = '2015-02-15';
 
-    expect(postQuery).to.equal(output);
+        postQuery = QueryService.create(value);
 
-    // do the same in xml
-    output = output.replace('json','xml');
+        expect(postQuery).to.equal(output);
 
-    postQuery = QueryService.create(value);
+        // do the same in xml
+        output = output.replace('json', 'xml');
 
-    expect(postQuery).to.equal(output);
+        postQuery = QueryService.create(value);
+
+        expect(postQuery).to.equal(output);
+    }
+    else{
+        delete value.data;
+        expect(function(){
+            QueryService.create(value);
+        }).to.throw("ID is required for this call");
+    }
 }
 
 /**
@@ -541,43 +572,50 @@ function _GenerateQueries__activities_GET(){
     _GenerateQueries__StandardGETTest('activities', jsonURL, true);
 }
 function _GenerateQueries__activities_POST(){
-    expect('todo').to.equal(true);
+    var jsonURL = 'https://api.fitbit.com/1/user/-/activities.json';
+    _GenerateQueries__StandardPOSTTest('activities', jsonURL);
 }
 function _GenerateQueries__activities_DELETE(){
-    _GenerateQueries__StandardNotExistTest('activities', 'DELETE');
+    var jsonURL = 'https://api.fitbit.com/1/user/-/activities/123.json';
+    _GenerateQueries__StandardDELETETest('activities', jsonURL);
 }
 function _GenerateQueries__publicActivities_GET(){
-    expect('todo').to.equal(true);
+    var output = 'https://api.fitbit.com/1/activities.json';
+    _GenerateQueries__StandardGETTest('browse-public-activities', output);
 }
 function _GenerateQueries__publicActivities_POST(){
-    expect('todo').to.equal(true);
+    _GenerateQueries__StandardNotExistTest('browse-public-activities', 'POST');
 }
 function _GenerateQueries__publicActivities_DELETE(){
-    expect('todo').to.equal(true);
+    _GenerateQueries__StandardNotExistTest('browse-public-activities', 'DELETE');
 }
-
+function _GenerateQueries__specificPublicActivity_GET(){
+    var output = 'https://api.fitbit.com/1/activities/90009.json';
+    _GenerateQueries__StandardGETTest('public-activity', output, false, true);
+}
+function _GenerateQueries__specificPublicActivity_POST(){
+    _GenerateQueries__StandardNotExistTest('public-activity', 'POST');
+}
+function _GenerateQueries__specificPublicActivity_DELETE(){
+    _GenerateQueries__StandardNotExistTest('public-activity', 'DELETE');
+}
 function _GenerateQueries__recentActivity_GET() {
     var output = 'https://api.fitbit.com/1/user/-/activities/recent.json';
     _GenerateQueries__StandardGETTest('recent-activity', output);
 }
-
 function _GenerateQueries__recentActivity_POST() {
     _GenerateQueries__StandardNotExistTest('recent-activity', 'POST');
 }
-
 function _GenerateQueries__recentActivity_DELETE(){
     _GenerateQueries__StandardNotExistTest('recent-activity', 'DELETE');
 }
-
 function _GenerateQueries__frequentActivity_GET() {
     var output = 'https://api.fitbit.com/1/user/-/activities/frequent.json';
     _GenerateQueries__StandardGETTest('frequent-activity', output);
 }
-
 function _GenerateQueries__frequentActivity_POST() {
     _GenerateQueries__StandardNotExistTest('frequent-activity', 'POST');
 }
-
 function _GenerateQueries__frequentActivity_DELETE() {
     _GenerateQueries__StandardNotExistTest('frequent-activity', 'DELETE');
 }
@@ -587,26 +625,23 @@ function _GenerateQueries__favoriteActivity_GET(){
 }
 function _GenerateQueries__favoriteActivity_POST(){
     var jsonURL = 'https://api.fitbit.com/1/user/-/activities/log/favorite/1.json';
-    _GenerateQueries__StandardPOSTTest('favorite-activity',jsonURL);
+    _GenerateQueries__StandardPOSTTest('favorite-activity',jsonURL, true);
 }
 function _GenerateQueries__favoriteActivity_DELETE(){
-    var jsonURL = 'https://api.fitbit.com/1/user/-/activities/log/favorite/1.json';
+    var jsonURL = 'https://api.fitbit.com/1/user/-/activities/favorite/1.json';
     _GenerateQueries__StandardDELETETest('favorite-activity', jsonURL);
 }
 function _GenerateQueries__activityDailyGoal_GET(){
     var output = 'https://api.fitbit.com/1/user/-/activities/goals/daily.json';
     _GenerateQueries__StandardGETTest('activity-daily-goal', output);
 }
-
 function _GenerateQueries__activityDailyGoal_POST(){
     var output = 'https://api.fitbit.com/1/user/-/activities/goals/daily.json';
     _GenerateQueries__StandardPOSTTest('activity-daily-goal', output);
 }
-
 function _GenerateQueries__activityDailyGoal_DELETE(){
     _GenerateQueries__StandardNotExistTest('activity-daily-goal', 'DELETE');
 }
-
 function _GenerateQueries__activityWeeklyGoal_GET(){
     var output = 'https://api.fitbit.com/1/user/-/activities/goals/weekly.json';
     _GenerateQueries__StandardGETTest('activity-weekly-goal', output);
@@ -618,7 +653,6 @@ function _GenerateQueries__activityWeeklyGoal_POST(){
 function _GenerateQueries__activityWeeklyGoal_DELETE(){
     _GenerateQueries__StandardNotExistTest('activity-weekly-goal', 'DELETE');
 }
-
 function _GenerateQueries__activityStats_GET(){
     var output = 'https://api.fitbit.com/1/user/-/activities.json';
     _GenerateQueries__StandardGETTest('activity-stats', output);
@@ -631,32 +665,17 @@ function _GenerateQueries__activityStats_POST(){
 function _GenerateQueries__activityStats_DELETE(){
     _GenerateQueries__StandardNotExistTest('activity-stats', 'DELETE');
 }
-
-/**
- * Generate Queries => Activities Stats Query
- * @private
- */
-function _GenerateQueries__activitesStatsQuery(){
-
-}
-
-/**
- * Generate Queries => Time Series Query
- * @private
- */
-function _GenerateQueries__timeSeriesQuery(){
-
-}
-
 function _GenerateQueries__food_GET(){
     var output = 'https://api.fitbit.com/1/user/-/foods/log/date/2015-06-02.json';
     _GenerateQueries__StandardGETTest('foods', output);
 }
 function _GenerateQueries__food_POST(){
-    expect('todo').to.equal(true);
+    var json = 'https://api.fitbit.com/1/user/-/foods/log.json';
+    _GenerateQueries__StandardPOSTTest('foods', json);
 }
 function _GenerateQueries__food_DELETE(){
-    expect('todo').to.equal(true);
+    var output = 'https://api.fitbit.com/1/user/-/foods/log/123.json';
+    _GenerateQueries__StandardDELETETest('foods', output);
 }
 function _GenerateQueries__searchFood_GET(){
     var output = 'https://api.fitbit.com/1/foods/search.json';
@@ -696,7 +715,8 @@ function _GenerateQueries__favoriteFood_POST(){
     _GenerateQueries__StandardNotExistTest('favorite-foods', 'POST');
 }
 function _GenerateQueries__favoriteFood_DELETE(){
-    _GenerateQueries__StandardNotExistTest('favorite-foods', 'DELETE');
+    var output = 'https://api.fitbit.com/1/user/-/foods/log/favorite/123.json';
+    _GenerateQueries__StandardDELETETest('favorite-foods', output);
 }
 function _GenerateQueries__water_GET(){
     var output = 'https://api.fitbit.com/1/user/-/foods/log/water/date/2015-06-02.json';
@@ -707,7 +727,8 @@ function _GenerateQueries__water_POST(){
     _GenerateQueries__StandardPOSTTest('water', output);
 }
 function _GenerateQueries__water_DELETE(){
-    expect('todo').to.equal(true);
+    var output = 'https://api.fitbit.com/1/user/-/foods/log/water/123.json';
+    _GenerateQueries__StandardDELETETest('water', output);
 }
 function _GenerateQueries__meals_GET(){
     var json = 'https://api.fitbit.com/1/user/-/meals.json';
@@ -724,40 +745,47 @@ function _GenerateQueries__sleep_GET(){
     _GenerateQueries__StandardGETTest('sleep', json);
 }
 function _GenerateQueries__sleep_POST(){
-    expect('TODO').to.equal(true);
+    var json = 'https://api.fitbit.com/1/user/-/sleep.json';
+    _GenerateQueries__StandardPOSTTest('sleep', json);
 }
 function _GenerateQueries__sleep_DELETE(){
-    expect('TODO').to.equal(true);
+    var json = 'https://api.fitbit.com/1/user/-/sleep/123.json';
+    _GenerateQueries__StandardDELETETest('sleep', json);
 }
 function _GenerateQueries__heart_GET(){
     var json = 'https://api.fitbit.com/1/user/-/heart/date/2015-06-02.json';
     _GenerateQueries__StandardGETTest('heart-rate', json);
 }
 function _GenerateQueries__heart_POST(){
-    expect('TODO').to.equal(true);
+    var json = 'https://api.fitbit.com/1/user/-/heart.json';
+    _GenerateQueries__StandardPOSTTest('heart-rate', json);
 }
 function _GenerateQueries__heart_DELETE(){
-    expect('TODO').to.equal(true);
+    var json = 'https://api.fitbit.com/1/user/-/heart/123.json';
+    _GenerateQueries__StandardDELETETest('heart-rate', json);
 }
 function _GenerateQueries__bloodPressure_GET(){
     var json = 'https://api.fitbit.com/1/user/-/bp/date/2015-06-02.json';
-    _GenerateQueries__StandardGETTest('bloodPressure', json);
+    _GenerateQueries__StandardGETTest('blood-pressure', json);
 }
 function _GenerateQueries__bloodPressure_POST(){
-    expect('TODO').to.equal(true);
+    var json = 'https://api.fitbit.com/1/user/-/bp.json';
+    _GenerateQueries__StandardPOSTTest('blood-pressure', json);
 }
 function _GenerateQueries__bloodPressure_DELETE(){
-    expect('TODO').to.equal(true);
+    var json = 'https://api.fitbit.com/1/user/-/bp/123.json';
+    _GenerateQueries__StandardDELETETest('blood-pressure', json);
 }
 function _GenerateQueries__glucose_GET(){
     var json = 'https://api.fitbit.com/1/user/-/glucose/date/2015-06-02.json';
     _GenerateQueries__StandardGETTest('glucose', json);
 }
 function _GenerateQueries__glucose_POST(){
-    expect('TODO').to.equal(true);
+    var json = 'https://api.fitbit.com/1/user/-/glucose.json';
+    _GenerateQueries__StandardPOSTTest('glucose', json);
 }
 function _GenerateQueries__glucose_DELETE(){
-    expect('TODO').to.equal(true);
+    _GenerateQueries__StandardNotExistTest('glucose','DELETE');
 }
 function _GenerateQueries__friends_GET(){
     var json = 'https://api.fitbit.com/1/user/-/friends.json';
@@ -789,7 +817,8 @@ function _GenerateQueries__TimeSeries_GET(){
         subcategory: 'minutesAsleep',
         date: '2015-03-01',
         timespan: '7d'
-    }
+    };
+
     var result = QueryService.create(value);
     expect(result).to.equal(output);
 
