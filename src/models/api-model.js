@@ -227,8 +227,8 @@ var APIModel = {
                 },{
                     category: 'foods',
                     subcategories: [
-                        'caloriesIn',
-                        'water'
+                        'log/caloriesIn',
+                        'log/water'
                     ]
                 }],
                 dateRequired: true // will be true by default
